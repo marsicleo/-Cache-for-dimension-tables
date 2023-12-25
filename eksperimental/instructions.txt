@@ -1,0 +1,3 @@
+1.open one.ipynb and run docker-compose up(might need manual interrupt after 30 seconds)
+2.run GUI.py and choose cached or non-cached benchmark
+3.run  docker-compose down
