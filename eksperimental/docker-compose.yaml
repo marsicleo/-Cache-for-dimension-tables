@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  
+  redis:
+    image: redis:latest
+    container_name: redis_cache
+    restart: unless-stopped
+    ports:
+      - "6380:6379"
+    volumes:
+      - ./redis.conf:/usr/local/etc/redis/redis.conf
+      - ./redis_data:/data
+    networks:
+      - app-network
+
+  sqlite:
+    image: jitesoft/sqlite:latest  
+    container_name: sqlite_db
+    restart: unless-stopped
+    volumes:
+      - ./database.db:/data/database.db 
+    
+    networks:
+      - app-network
+
+  main_app:
+    build: .
+    container_name: main_app_container
+    restart: unless-stopped
+    ports:
+      - "5000:5000"
+    networks:
+      - app-network
+    depends_on:
+      - redis
+      - sqlite
+networks:
+  app-network:
+    driver: bridge
